@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ShortlinkController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserModuleController;
 use App\Http\Middleware\CheckModuleActive;
@@ -31,5 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/links', [ShortlinkController::class, 'getLinks']);
         
         Route::delete('/links/{id}', [ShortlinkController::class, 'delete']);
+    });
+    
+    // wallet route
+    Route::middleware('isModuleActive:2')->group(function() {
+        Route::get('/wallet', [UserController::class, 'wallet']);
+
     });
 });

@@ -61,4 +61,13 @@ class UserController extends Controller
             'user_id'=>$user->id
         ], 200);
     }
+
+    public function wallet(Request $request){
+        $user = $request->user();
+
+        return response()->json([
+            "user_id"=>$user->id,
+            "balance"=>$user->balance
+        ], 200);
+    }
 }
