@@ -56,4 +56,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Shortlink::class);
     }
+
+
+    /**
+     * Get the transactions for the user.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'sender_id');
+    }
 }

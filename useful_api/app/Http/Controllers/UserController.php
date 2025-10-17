@@ -19,7 +19,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8|confirmed'
         ]);
         
         
@@ -58,7 +58,8 @@ class UserController extends Controller
         $token = $user->createToken($user->name)->plainTextToken;
         return response()->json([
             "token"=>$token,
-            'user_id'=>$user->id
+            'user_id'=>$user->id,
+            'user' => $user
         ], 200);
     }
 
@@ -69,5 +70,9 @@ class UserController extends Controller
             "user_id"=>$user->id,
             "balance"=>$user->balance
         ], 200);
+    }
+
+    public function index(){
+        return response()->json(User::all(), 200);
     }
 }

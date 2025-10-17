@@ -52,8 +52,8 @@ class UserModuleController extends Controller
             
         } catch (Exception $err) {
             return response()->json([
-                'message' => $err->getMessage()
-            ], 400);
+                'errors' => $err->getMessage()
+            ], 500);
         }
     }
 
@@ -82,7 +82,29 @@ class UserModuleController extends Controller
         } catch (Exception $err) {
             return response()->json([
                 'message' => $err->getMessage()
-            ], 400);
+            ], 500);
         }
+    }
+
+    public function getUserModule(Request $request){
+        $user = $request->user();
+
+        $modules = Module::all();
+
+        $state = [];
+
+        foreach($modules as $module){
+            $record = Usermodule::where('user_id', $user->id)
+                ->where('module_id', $module->id)->first();
+            
+            if($record && $record->active === 1){
+                $state[$module->name] = "on";
+            }else{
+                $state[$module->name] = "off";
+            }
+            
+        }
+
+        return response()->json($state);
     }
 }

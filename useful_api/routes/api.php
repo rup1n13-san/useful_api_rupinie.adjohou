@@ -17,6 +17,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/users', [UserController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/modules/{id}/deactivate', [UserModuleController::class, 'deactivate']);
     
     Route::get('/modules', [ModuleController::class, 'index']);
+    Route::get('/user/modules', [UserModuleController::class, 'getUserModule']);
     
     // shortlinks route
     Route::middleware('isModuleActive:1')->group(function() {
@@ -38,9 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // wallet route
     Route::middleware('isModuleActive:2')->group(function() {
         Route::get('/wallet', [UserController::class, 'wallet']);
-
+        Route::get('/wallet/transactions', [TransactionController::class, 'transactions']);
         
-        Route::get('/wallet/transfer', [TransactionController::class, 'transfer']);
+        Route::post('/wallet/transfer', [TransactionController::class, 'transfer']);
+        Route::post('/wallet/topup', [TransactionController::class, 'topup']);
 
     });
 });
