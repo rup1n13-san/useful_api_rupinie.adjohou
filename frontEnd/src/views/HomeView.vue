@@ -1,13 +1,16 @@
 <script setup>
 import { useModuleStore } from '@/stores/module';
+import { useUrlStore } from '@/stores/url';
 import { useUserStore } from '@/stores/user';
 import { onMounted } from 'vue';
 
 const userStore = useUserStore();
 const moduleStore = useModuleStore();
+const urlStore = useUrlStore();
 
 onMounted(async () => {
 	await moduleStore.getModules();
+  await urlStore.getUrls()
 });
 
 const changeState = async (state, index) => {
@@ -40,6 +43,17 @@ const changeState = async (state, index) => {
 				</div>
 			</div>
 		</aside>
-		<div class="flex flex-1"></div>
+		<div class="flex flex-1 relative flex-col overflow-y-auto overflow-x-hidden">
+      <div class="text-3xl text-gray-800">
+        All links 
+      </div>
+      <div class="flex flex-col">
+        <div v-for="url in urlStore.urls" class="flex justify-between mb-">
+          <span>{{ url.original_url }}</span>
+          <span>{{ url.custom_code }}</span>
+          <span>{{ url.cliks }}</span>
+        </div>
+      </div>
+    </div>
 	</div>
 </template>
